@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:geolocator/geolocator.dart';
-  void getCurrentLocaion() async {
-    var currentLocation = "";
-  var Latitude = "";
-  var Longitude = "";
-  var temperature = 0.0;
-  var cityName;
-    try {
+import 'apiJsonbody.dart';
+void getConnection() async{
+  try {
       var permission = await Geolocator.checkPermission();
       if (permission == LocationPermission.denied) {
         permission = await Geolocator.requestPermission();
@@ -16,20 +12,22 @@ import 'package:geolocator/geolocator.dart';
         }
       }
     } catch (e) {
-      getCurrentLocaion();
+      getConnection();
     }
+}
+  Future getCurrentLocaionLatitude() async {
+    getConnection();
 
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
-    print(position.latitude);
-    print(position.longitude);
+    return position.latitude;
+  }
 
-    dynamic jasondata;
-    
-    double lon = position.longitude;
-    double lat = position.latitude;
-    
-    // cityName = locationWeather['name'].toString();
+  Future getCurrentLocaionLongitude() async {
+  getConnection();
 
-    
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+    return position.longitude;
+
   }
