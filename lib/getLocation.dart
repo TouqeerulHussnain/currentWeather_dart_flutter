@@ -1,7 +1,5 @@
-import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+
 import 'package:geolocator/geolocator.dart';
-import 'apiJsonbody.dart';
 void getConnection() async{
   try {
       var permission = await Geolocator.checkPermission();
@@ -29,5 +27,4 @@ void getConnection() async{
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
     return position.longitude;
-
   }

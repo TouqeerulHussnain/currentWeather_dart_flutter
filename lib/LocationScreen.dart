@@ -1,29 +1,32 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
-import 'package:lab9/secondScreen.dart';
 import 'package:lab9/weather.dart';
-import 'apiJsonbody.dart';
 import 'dart:convert';
-var latitude;
-  var longitude;
+
   
   
   
 class secondPage extends StatefulWidget {
-  double? temperature;
-  String? cityName;
-  String? weatherIcon;
+   double temperature = 0.0;
+   String? cityName;
+   String? weatherIcon;
   String? weatherMsg;
-  
-  double? Latiude;
+  // var latitude;
+  // var longitude;
+  double? Latitude;
   double? Longitude;
-  secondPage({@required this.temperature,this.cityName , this.weatherIcon, this.weatherMsg}) ;
-  void updateUI() async{
-  }
-  getLatitueLongitude(latitude, longitude){
-    Latiude = latitude;
-    Longitude = longitude;
-  }
+  var weathercode;
+  var jsondata ;
+  dynamic locationWeather;
+  
+  secondPage({required jsondata}){
+     temperature = jsonDecode( jsondata)['main']['temp'];
+     weathercode = jsonDecode( jsondata)['weather'][0]['id'];
+    weatherIcon = Weather().getWeatherIcon(weathercode);
+    weatherMsg = Weather().getMessage(temperature);
+     cityName = jsonDecode( jsondata)['name'].toString();
+     Latitude = jsonDecode( jsondata)['coord']['lat'];
+     Longitude = jsonDecode( jsondata)['coord']['lon'];
+    }
   
   @override
   State<secondPage> createState() => _secondPageState();
@@ -31,18 +34,22 @@ class secondPage extends StatefulWidget {
 }
 
 class _secondPageState extends State<secondPage> {
+  Weather weather = Weather();
 double? temperature;
   String? cityName;
   String? weatherIcon;
   String? weatherMsg;
-  double? Latiude;
-  double? Longitude;
-  
+  double? latitude;
+  double? longitude;
+ @override 
 void initState() {
   super.initState();
-    widget.updateUI();
     temperature = widget.temperature;
     cityName= widget.cityName;
+    latitude = widget.Latitude;
+    longitude = widget.Longitude;
+    weatherIcon = widget.weatherIcon;
+    weatherMsg = widget.weatherMsg;
   }
   
   @override
@@ -59,18 +66,6 @@ void initState() {
             ),
             SizedBox(
               height: 10,
-            ),
-            ElevatedButton(
-              onPressed: () {
-                // getCurrentLocaion();
-              },
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  'Get Location',
-                  style: TextStyle(fontSize: 30),
-                ),
-              ),
             ),
             SizedBox(
               height: 20,
@@ -91,20 +86,16 @@ void initState() {
               "City name : $cityName ",
               style: TextStyle(fontSize: 20),
             ),
+            Text(
+              weatherIcon.toString(),
+              style: TextStyle(fontSize: 20),
+            ),
+            Text(
+              weatherMsg.toString(),
+              style: TextStyle(fontSize: 20),
+            ),
             SizedBox(
               height: 20,
-            ),
-            Text("response "),
-            ElevatedButton(
-              onPressed: () {
-              },
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  'Next Screen',
-                  style: TextStyle(fontSize: 20),
-                ),
-              ),
             ),
           ],
         ),
